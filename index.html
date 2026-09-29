@@ -3,107 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ecomprompt.app - Générateur de Prompts E-commerce</title>
+  <title>EcomPrompt - Générateur de Prompts E-commerce</title>
   <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; line-height: 1.5; color: #333; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .logo { font-size: 20px; font-weight: bold; color: #0070f3; margin: 0; }
-    .lang-switch { display: flex; gap: 6px; }
-    .lang-btn { background: #f0f0f0; border: 1px solid #ccc; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 14px; }
-    .lang-btn.active { background: #0070f3; color: white; border-color: #0070f3; }
-    h1 { font-size: 24px; margin-top: 0; }
-    p.subtitle { color: #666; font-size: 15px; margin-bottom: 24px; }
-    label { font-weight: 600; display: block; margin-top: 14px; margin-bottom: 6px; font-size: 14px; }
-    input, textarea { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; font-size: 15px; }
-    button.submit { width: 100%; background: #0070f3; color: white; font-weight: bold; border: none; padding: 14px; margin-top: 20px; border-radius: 6px; cursor: pointer; font-size: 16px; }
-    button.submit:active { background: #0051a2; }
-    .result { background: #f7f9fa; padding: 16px; border-radius: 6px; border-left: 4px solid #0070f3; margin-top: 24px; }
-    .result h3 { margin-top: 0; font-size: 16px; }
-    .result p { white-space: pre-wrap; font-size: 14px; color: #222; background: #fff; padding: 12px; border: 1px solid #eee; border-radius: 4px; }
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --accent: #3b82f6;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 20px 15px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
+    .lang-switcher {
+      display: flex;
+      gap: 4px;
+      background: var(--card);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      padding: 6px 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    button.btn-generate {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .output-box {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: var(--bg);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    .btn-copy {
+      background: var(--border);
+      color: var(--text);
+      border: none;
+      padding: 8px 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">ecomprompt.app</div>
-    <div class="lang-switch">
-      <button class="lang-btn active" id="btn-fr" onclick="changeLang('fr')">FR</button>
-      <button class="lang-btn" id="btn-en" onclick="changeLang('en')">EN</button>
+  <header>
+    <h1>EcomPrompt</h1>
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-fr" onclick="setLanguage('fr')">FR</button>
+      <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
+  </header>
+
+  <div class="card">
+    <label id="lbl-product">Nom du produit / Service</label>
+    <input type="text" id="product" placeholder="ex: Gourde isotherme inox 1L">
+
+    <label id="lbl-audience">Public cible</label>
+    <input type="text" id="audience" placeholder="ex: Randonneurs et sportifs écoresponsables">
+
+    <label id="lbl-type">Type de contenu</label>
+    <select id="type">
+      <option value="description" id="opt-desc">Fiche Produit (SEO + Avantages)</option>
+      <option value="ad" id="opt-ad">Publicité Facebook / Instagram</option>
+      <option value="email" id="opt-email">Courriel de Lancement / Relance</option>
+    </select>
+
+    <button class="btn-generate" id="btn-gen" onclick="generatePrompt()">Générer le Prompt</button>
   </div>
 
-  <h1 id="title">Générez vos fiches produits e-commerce en 30 secondes ⚡</h1>
-  <p class="subtitle" id="subtitle">Outil 100 % gratuit pour vendeurs Shopify, Amazon et Etsy.</p>
-
-  <label id="label-product">Nom du produit :</label>
-  <input type="text" id="input-product" placeholder="Ex: Portefeuille en cuir marron...">
-
-  <label id="label-features">Caractéristiques clés :</label>
-  <textarea id="input-features" rows="3" placeholder="Ex: Cuir véritable, fait main, 6 rangements cartes..."></textarea>
-
-  <button class="submit" id="btn-generate" onclick="generatePrompt()">Générer le prompt</button>
-
-  <div class="result" id="result-box" style="display:none;">
-    <h3 id="result-title">Votre prompt optimisé :</h3>
-    <p id="prompt-output"></p>
+  <div class="card" id="result-card" style="display:none;">
+    <label id="lbl-result">Votre Prompt IA prêt à copier :</label>
+    <div class="output-box" id="output"></div>
+    <button class="btn-copy" id="btn-copy" onclick="copyPrompt()">Copier le prompt</button>
   </div>
 
   <script>
-    const texts = {
+    let currentLang = 'fr';
+
+    const translations = {
       fr: {
-        title: "Générez vos fiches produits e-commerce en 30 secondes ⚡",
-        subtitle: "Outil 100 % gratuit pour vendeurs Shopify, Amazon et Etsy.",
-        labelProduct: "Nom du produit :",
-        placeholderProduct: "Ex: Portefeuille en cuir marron...",
-        labelFeatures: "Caractéristiques clés :",
-        placeholderFeatures: "Ex: Cuir véritable, fait main, 6 rangements cartes...",
-        btnGenerate: "Générer le prompt",
-        resultTitle: "Votre prompt optimisé :"
+        lblProduct: "Nom du produit / Service",
+        phProduct: "ex: Gourde isotherme inox 1L",
+        lblAudience: "Public cible",
+        phAudience: "ex: Randonneurs et sportifs écoresponsables",
+        lblType: "Type de contenu",
+        optDesc: "Fiche Produit (SEO + Avantages)",
+        optAd: "Publicité Facebook / Instagram",
+        optEmail: "Courriel de Lancement / Relance",
+        btnGen: "Générer le Prompt",
+        lblResult: "Votre Prompt IA prêt à copier :",
+        btnCopy: "Copier le prompt",
+        copied: "Copié !"
       },
       en: {
-        title: "Generate e-commerce product listings in 30 seconds ⚡",
-        subtitle: "100% free tool for Shopify, Amazon, and Etsy sellers.",
-        labelProduct: "Product Name:",
-        placeholderProduct: "E.g. Brown leather wallet...",
-        labelFeatures: "Key Features:",
-        placeholderFeatures: "E.g. Genuine leather, handmade, 6 card slots...",
-        btnGenerate: "Generate Prompt",
-        resultTitle: "Your Optimized Prompt:"
+        lblProduct: "Product / Service Name",
+        phProduct: "e.g., 1L Insulated Stainless Steel Water Bottle",
+        lblAudience: "Target Audience",
+        phAudience: "e.g., Eco-friendly hikers and athletes",
+        lblType: "Content Type",
+        optDesc: "Product Page (SEO + Benefits)",
+        optAd: "Facebook / Instagram Ad",
+        optEmail: "Launch / Follow-up Email",
+        btnGen: "Generate Prompt",
+        lblResult: "Your AI Prompt ready to copy:",
+        btnCopy: "Copy prompt",
+        copied: "Copied!"
       }
     };
 
-    let currentLang = 'fr';
-
-    function changeLang(lang) {
+    function setLanguage(lang) {
       currentLang = lang;
       document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
       
-      document.getElementById('title').innerText = texts[lang].title;
-      document.getElementById('subtitle').innerText = texts[lang].subtitle;
-      document.getElementById('label-product').innerText = texts[lang].labelProduct;
-      document.getElementById('input-product').placeholder = texts[lang].placeholderProduct;
-      document.getElementById('label-features').innerText = texts[lang].labelFeatures;
-      document.getElementById('input-features').placeholder = texts[lang].placeholderFeatures;
-      document.getElementById('btn-generate').innerText = texts[lang].btnGenerate;
-      document.getElementById('result-title').innerText = texts[lang].resultTitle;
+      const t = translations[lang];
+      document.getElementById('lbl-product').innerText = t.lblProduct;
+      document.getElementById('product').placeholder = t.phProduct;
+      document.getElementById('lbl-audience').innerText = t.lblAudience;
+      document.getElementById('audience').placeholder = t.phAudience;
+      document.getElementById('lbl-type').innerText = t.lblType;
+      document.getElementById('opt-desc').innerText = t.optDesc;
+      document.getElementById('opt-ad').innerText = t.optAd;
+      document.getElementById('opt-email').innerText = t.optEmail;
+      document.getElementById('btn-gen').innerText = t.btnGen;
+      document.getElementById('lbl-result').innerText = t.lblResult;
+      document.getElementById('btn-copy').innerText = t.btnCopy;
     }
 
     function generatePrompt() {
-      const product = document.getElementById('input-product').value;
-      const features = document.getElementById('input-features').value;
+      const product = document.getElementById('product').value || (currentLang === 'fr' ? 'Mon Produit' : 'My Product');
+      const audience = document.getElementById('audience').value || (currentLang === 'fr' ? 'Clients potentiels' : 'Potential Customers');
+      const type = document.getElementById('type').value;
 
-      if (!product) return;
+      let promptText = "";
 
-      let generated = "";
       if (currentLang === 'fr') {
-        generated = `Rédige une fiche produit ultra-convaincante pour le produit suivant : "${product}".\n\nCaractéristiques clés :\n${features}\n\nConsignes :\n- Mets en avant les bénéfices pour le client.\n- Utilise un ton persuasif et engageant adapté au e-commerce.\n- Structure la réponse avec un titre accrocheur, des puces pour les points forts et un appel à l'action.`;
+        if (type === 'description') {
+          promptText = `Rédige une fiche produit captivante et optimisée SEO pour le produit "${product}".\n\n- Public cible : ${audience}\n- Structure : Accroche persuasive, liste des avantages clés avec puces, caractéristiques techniques, et un appel à l'action (CTA) incitatif.\n- Ton : Professionnel, engageant et orienté conversion.`;
+        } else if (type === 'ad') {
+          promptText = `Rédige 3 variations de textes publicitaires (Facebook/Instagram) pour le produit "${product}".\n\n- Public cible : ${audience}\n- Format : Titre percutant, corps du texte axé sur la résolution de problème, et appel à l'action court.\n- Ton : Captivant, dynamique et persuasif.`;
+        } else {
+          promptText = `Rédige un courriel de vente pour le produit "${product}".\n\n- Public cible : ${audience}\n- Inclure : 3 propositions d'objets de courriel accrocheurs, un corps de message personnalisé centré sur la valeur du produit, et un bouton d'action clair.\n- Ton : Chaleureux et convaincant.`;
+        }
       } else {
-        generated = `Write a high-converting product description for the following product: "${product}".\n\nKey features:\n${features}\n\nInstructions:\n- Focus on customer benefits.\n- Use a persuasive and engaging tone optimized for e-commerce.\n- Include an catchy headline, bullet points for key features, and a call-to-action.`;
+        if (type === 'description') {
+          promptText = `Write a compelling and SEO-optimized product description for "${product}".\n\n- Target Audience: ${audience}\n- Structure: Strong hook, bulleted list of key benefits, technical details, and a clear Call to Action (CTA).\n- Tone: Professional, engaging, and conversion-focused.`;
+        } else if (type === 'ad') {
+          promptText = `Write 3 ad copy variations (Facebook/Instagram) for "${product}".\n\n- Target Audience: ${audience}\n- Format: Attention-grabbing headline, problem-solving body copy, and a strong CTA.\n- Tone: Dynamic, persuasive, and engaging.`;
+        } else {
+          promptText = `Write a sales email for "${product}".\n\n- Target Audience: ${audience}\n- Include: 3 catchy subject line options, personalized body text focusing on value, and a clear call to action.\n- Tone: Warm, convincing, and direct.`;
+        }
       }
 
-      document.getElementById('prompt-output').innerText = generated;
-      document.getElementById('result-box').style.display = 'block';
+      document.getElementById('output').innerText = promptText;
+      document.getElementById('result-card').style.display = 'block';
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById('output').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btn-copy');
+        const orig = btn.innerText;
+        btn.innerText = translations[currentLang].copied;
+        setTimeout(() => btn.innerText = orig, 2000);
+      });
     }
   </script>
 </body>
