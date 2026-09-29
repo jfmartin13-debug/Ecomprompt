@@ -6,12 +6,14 @@
   <title>EcomPrompt - Générateur de Prompts E-commerce</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --card-bg: #ffffff;
-      --text: #0f172a;
-      --border: #e2e8f0;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --input-bg: #f9fafb;
     }
 
     * {
@@ -22,55 +24,62 @@
     }
 
     body {
-      background-color: var(--bg);
+      background: var(--bg-gradient);
       color: var(--text);
+      min-height: 100vh;
       padding: 2rem 1rem;
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
     .container {
       width: 100%;
-      max-width: 700px;
+      max-width: 680px;
       background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 2px solid #f3f4f6;
     }
 
     h1 {
       font-size: 1.5rem;
-      color: var(--text);
+      font-weight: 700;
+      color: #111827;
     }
 
     .lang-switcher {
       display: flex;
-      gap: 0.5rem;
+      background: #f3f4f6;
+      padding: 4px;
+      border-radius: 8px;
     }
 
     .lang-btn {
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      padding: 0.4rem 0.8rem;
+      background: transparent;
+      border: none;
+      padding: 0.4rem 0.9rem;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: all 0.2s;
     }
 
     .lang-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .form-group {
@@ -81,22 +90,26 @@
       display: block;
       font-weight: 600;
       margin-bottom: 0.5rem;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      color: #374151;
     }
 
     input, select, textarea {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 1rem;
-      background: #fff;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      background: var(--input-bg);
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
 
     button.generate-btn {
@@ -104,12 +117,13 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 0.85rem;
+      padding: 0.9rem;
       font-size: 1rem;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.2s;
+      margin-top: 0.5rem;
     }
 
     button.generate-btn:hover {
@@ -119,31 +133,38 @@
     .output-group {
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      border-top: 2px solid #f3f4f6;
     }
 
     textarea.output {
       height: 180px;
       resize: vertical;
-      font-family: monospace;
-      font-size: 0.9rem;
-      background: #f8fafc;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.875rem;
+      background: #1e293b;
+      color: #f8fafc;
+      border: none;
+    }
+
+    .output-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.75rem;
     }
 
     .copy-btn {
-      margin-top: 0.5rem;
-      background: #e2e8f0;
-      color: var(--text);
+      background: #e0e7ff;
+      color: var(--primary);
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.25rem;
       font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
-      float: right;
+      transition: background 0.2s;
     }
 
     .copy-btn:hover {
-      background: #cbd5e1;
+      background: #c7d2fe;
     }
   </style>
 </head>
@@ -151,7 +172,7 @@
 
 <div class="container">
   <div class="header">
-    <h1 id="app-title">Générateur de Prompts</h1>
+    <h1 id="app-title">🚀 EcomPrompt</h1>
     <div class="lang-switcher">
       <button class="lang-btn active" id="btn-fr" onclick="setLanguage('fr')">FR</button>
       <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
@@ -190,7 +211,9 @@
   <div class="output-group">
     <label id="lbl-output" for="output">Votre Prompt Optimisé :</label>
     <textarea id="output" class="output" readonly placeholder="Le prompt apparaîtra ici..."></textarea>
-    <button class="copy-btn" id="btn-copy" onclick="copyPrompt()">Copier le prompt</button>
+    <div class="output-actions">
+      <button class="copy-btn" id="btn-copy" onclick="copyPrompt()">Copier le prompt</button>
+    </div>
   </div>
 </div>
 
@@ -199,7 +222,7 @@
 
   const translations = {
     fr: {
-      title: "Générateur de Prompts E-commerce",
+      title: "🚀 EcomPrompt",
       productLabel: "Nom du produit",
       productPlaceholder: "ex: Gourde isotherme en inox 1L",
       audienceLabel: "Public cible",
@@ -220,7 +243,7 @@
       copied: "Copié !"
     },
     en: {
-      title: "E-commerce Prompt Generator",
+      title: "🚀 EcomPrompt",
       productLabel: "Product Name",
       productPlaceholder: "e.g., 1L Stainless Steel Insulated Water Bottle",
       audienceLabel: "Target Audience",
@@ -246,11 +269,9 @@
     currentLang = lang;
     document.documentElement.lang = lang;
 
-    // Toggle button styles
     document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
 
-    // Update UI text
     const t = translations[lang];
     document.getElementById('app-title').textContent = t.title;
     document.getElementById('lbl-product').textContent = t.productLabel;
@@ -344,4 +365,3 @@ Write all output in English.`;
 
 </body>
 </html>
-
