@@ -6,235 +6,342 @@
   <title>EcomPrompt - Générateur de Prompts E-commerce</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --accent: #3b82f6;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --border: #334155;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #e2e8f0;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      line-height: 1.5;
-      padding: 20px 15px;
-      max-width: 650px;
-      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
     }
-    header {
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
     }
-    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
+
+    h1 {
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
     .lang-switcher {
       display: flex;
-      gap: 4px;
-      background: var(--card);
-      padding: 4px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      gap: 0.5rem;
     }
+
     .lang-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      padding: 6px 12px;
-      font-weight: 600;
-      font-size: 0.85rem;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 0.875rem;
     }
+
     .lang-btn.active {
-      background: var(--accent);
-      color: #fff;
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
     }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
+
+    .form-group {
+      margin-bottom: 1.25rem;
     }
+
     label {
       display: block;
-      font-size: 0.875rem;
       font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
     }
+
     input, select, textarea {
       width: 100%;
-      padding: 12px;
-      background: var(--bg);
+      padding: 0.75rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
+      border-radius: 6px;
       font-size: 1rem;
-      margin-bottom: 16px;
+      background: #fff;
     }
-    button.btn-generate {
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    button.generate-btn {
       width: 100%;
-      background: var(--accent);
-      color: #fff;
+      background: var(--primary);
+      color: white;
       border: none;
-      padding: 14px;
+      padding: 0.85rem;
       font-size: 1rem;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .output-box {
-      white-space: pre-wrap;
-      word-break: break-word;
-      background: var(--bg);
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      margin-top: 10px;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-    .btn-copy {
-      background: var(--border);
-      color: var(--text);
-      border: none;
-      padding: 8px 16px;
       font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 10px;
-      width: 100%;
+      transition: background 0.2s;
+    }
+
+    button.generate-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .output-group {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    textarea.output {
+      height: 180px;
+      resize: vertical;
+      font-family: monospace;
+      font-size: 0.9rem;
+      background: #f8fafc;
+    }
+
+    .copy-btn {
+      margin-top: 0.5rem;
+      background: #e2e8f0;
+      color: var(--text);
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .copy-btn:hover {
+      background: #cbd5e1;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>EcomPrompt</h1>
+<div class="container">
+  <div class="header">
+    <h1 id="app-title">Générateur de Prompts</h1>
     <div class="lang-switcher">
       <button class="lang-btn active" id="btn-fr" onclick="setLanguage('fr')">FR</button>
       <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
     </div>
-  </header>
-
-  <div class="card">
-    <label id="lbl-product">Nom du produit / Service</label>
-    <input type="text" id="product" placeholder="ex: Gourde isotherme inox 1L">
-
-    <label id="lbl-audience">Public cible</label>
-    <input type="text" id="audience" placeholder="ex: Randonneurs et sportifs écoresponsables">
-
-    <label id="lbl-type">Type de contenu</label>
-    <select id="type">
-      <option value="description" id="opt-desc">Fiche Produit (SEO + Avantages)</option>
-      <option value="ad" id="opt-ad">Publicité Facebook / Instagram</option>
-      <option value="email" id="opt-email">Courriel de Lancement / Relance</option>
-    </select>
-
-    <button class="btn-generate" id="btn-gen" onclick="generatePrompt()">Générer le Prompt</button>
   </div>
 
-  <div class="card" id="result-card" style="display:none;">
-    <label id="lbl-result">Votre Prompt IA prêt à copier :</label>
-    <div class="output-box" id="output"></div>
-    <button class="btn-copy" id="btn-copy" onclick="copyPrompt()">Copier le prompt</button>
+  <form id="prompt-form" onsubmit="handleGenerate(event)">
+    <div class="form-group">
+      <label id="lbl-product" for="product">Nom du produit</label>
+      <input type="text" id="product" placeholder="ex: Gourde isotherme en inox 1L" required>
+    </div>
+
+    <div class="form-group">
+      <label id="lbl-audience" for="audience">Public cible</label>
+      <input type="text" id="audience" placeholder="ex: Randonneurs, sportifs, travailleurs nomades">
+    </div>
+
+    <div class="form-group">
+      <label id="lbl-tone" for="tone">Ton de rédaction</label>
+      <select id="tone">
+        <option value="persuasive" id="opt-persuasive">Persuasif & Convainquant</option>
+        <option value="professional" id="opt-professional">Professionnel & Épuré</option>
+        <option value="friendly" id="opt-friendly">Amical & Chaleureux</option>
+        <option value="urgent" id="opt-urgent">Axé sur l'urgence & l'offre</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label id="lbl-features" for="features">Caractéristiques clés</label>
+      <textarea id="features" rows="3" placeholder="ex: Garde le froid 24h, 100% étanche, sans BPA"></textarea>
+    </div>
+
+    <button type="submit" class="generate-btn" id="btn-generate">Générer le Prompt</button>
+  </form>
+
+  <div class="output-group">
+    <label id="lbl-output" for="output">Votre Prompt Optimisé :</label>
+    <textarea id="output" class="output" readonly placeholder="Le prompt apparaîtra ici..."></textarea>
+    <button class="copy-btn" id="btn-copy" onclick="copyPrompt()">Copier le prompt</button>
   </div>
+</div>
 
-  <script>
-    let currentLang = 'fr';
+<script>
+  let currentLang = 'fr';
 
-    const translations = {
-      fr: {
-        lblProduct: "Nom du produit / Service",
-        phProduct: "ex: Gourde isotherme inox 1L",
-        lblAudience: "Public cible",
-        phAudience: "ex: Randonneurs et sportifs écoresponsables",
-        lblType: "Type de contenu",
-        optDesc: "Fiche Produit (SEO + Avantages)",
-        optAd: "Publicité Facebook / Instagram",
-        optEmail: "Courriel de Lancement / Relance",
-        btnGen: "Générer le Prompt",
-        lblResult: "Votre Prompt IA prêt à copier :",
-        btnCopy: "Copier le prompt",
-        copied: "Copié !"
+  const translations = {
+    fr: {
+      title: "Générateur de Prompts E-commerce",
+      productLabel: "Nom du produit",
+      productPlaceholder: "ex: Gourde isotherme en inox 1L",
+      audienceLabel: "Public cible",
+      audiencePlaceholder: "ex: Randonneurs, sportifs, travailleurs nomades",
+      toneLabel: "Ton de rédaction",
+      tones: {
+        persuasive: "Persuasif & Convainquant",
+        professional: "Professionnel & Épuré",
+        friendly: "Amical & Chaleureux",
+        urgent: "Axé sur l'urgence & l'offre"
       },
-      en: {
-        lblProduct: "Product / Service Name",
-        phProduct: "e.g., 1L Insulated Stainless Steel Water Bottle",
-        lblAudience: "Target Audience",
-        phAudience: "e.g., Eco-friendly hikers and athletes",
-        lblType: "Content Type",
-        optDesc: "Product Page (SEO + Benefits)",
-        optAd: "Facebook / Instagram Ad",
-        optEmail: "Launch / Follow-up Email",
-        btnGen: "Generate Prompt",
-        lblResult: "Your AI Prompt ready to copy:",
-        btnCopy: "Copy prompt",
-        copied: "Copied!"
-      }
-    };
+      featuresLabel: "Caractéristiques clés",
+      featuresPlaceholder: "ex: Garde le froid 24h, 100% étanche, sans BPA",
+      generateBtn: "Générer le Prompt",
+      outputLabel: "Votre Prompt Optimisé :",
+      outputPlaceholder: "Le prompt apparaîtra ici...",
+      copyBtn: "Copier le prompt",
+      copied: "Copié !"
+    },
+    en: {
+      title: "E-commerce Prompt Generator",
+      productLabel: "Product Name",
+      productPlaceholder: "e.g., 1L Stainless Steel Insulated Water Bottle",
+      audienceLabel: "Target Audience",
+      audiencePlaceholder: "e.g., Hikers, athletes, remote workers",
+      toneLabel: "Tone of Voice",
+      tones: {
+        persuasive: "Persuasive & Compelling",
+        professional: "Professional & Clean",
+        friendly: "Friendly & Warm",
+        urgent: "Urgent & Offer-Driven"
+      },
+      featuresLabel: "Key Features",
+      featuresPlaceholder: "e.g., Keeps cold for 24h, 100% leakproof, BPA-free",
+      generateBtn: "Generate Prompt",
+      outputLabel: "Your Optimized Prompt:",
+      outputPlaceholder: "The prompt will appear here...",
+      copyBtn: "Copy Prompt",
+      copied: "Copied!"
+    }
+  };
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
-      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-      
-      const t = translations[lang];
-      document.getElementById('lbl-product').innerText = t.lblProduct;
-      document.getElementById('product').placeholder = t.phProduct;
-      document.getElementById('lbl-audience').innerText = t.lblAudience;
-      document.getElementById('audience').placeholder = t.phAudience;
-      document.getElementById('lbl-type').innerText = t.lblType;
-      document.getElementById('opt-desc').innerText = t.optDesc;
-      document.getElementById('opt-ad').innerText = t.optAd;
-      document.getElementById('opt-email').innerText = t.optEmail;
-      document.getElementById('btn-gen').innerText = t.btnGen;
-      document.getElementById('lbl-result').innerText = t.lblResult;
-      document.getElementById('btn-copy').innerText = t.btnCopy;
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    // Toggle button styles
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+    // Update UI text
+    const t = translations[lang];
+    document.getElementById('app-title').textContent = t.title;
+    document.getElementById('lbl-product').textContent = t.productLabel;
+    document.getElementById('product').placeholder = t.productPlaceholder;
+    document.getElementById('lbl-audience').textContent = t.audienceLabel;
+    document.getElementById('audience').placeholder = t.audiencePlaceholder;
+    document.getElementById('lbl-tone').textContent = t.toneLabel;
+    
+    document.getElementById('opt-persuasive').textContent = t.tones.persuasive;
+    document.getElementById('opt-professional').textContent = t.tones.professional;
+    document.getElementById('opt-friendly').textContent = t.tones.friendly;
+    document.getElementById('opt-urgent').textContent = t.tones.urgent;
+
+    document.getElementById('lbl-features').textContent = t.featuresLabel;
+    document.getElementById('features').placeholder = t.featuresPlaceholder;
+    document.getElementById('btn-generate').textContent = t.generateBtn;
+    document.getElementById('lbl-output').textContent = t.outputLabel;
+    document.getElementById('output').placeholder = t.outputPlaceholder;
+    document.getElementById('btn-copy').textContent = t.copyBtn;
+  }
+
+  function handleGenerate(e) {
+    e.preventDefault();
+
+    const product = document.getElementById('product').value;
+    const audience = document.getElementById('audience').value || (currentLang === 'fr' ? 'Clientèle générale' : 'General audience');
+    const toneSelect = document.getElementById('tone');
+    const toneText = toneSelect.options[toneSelect.selectedIndex].text;
+    const features = document.getElementById('features').value;
+
+    let generatedPrompt = "";
+
+    if (currentLang === 'fr') {
+      generatedPrompt = `Rôle : Agis en tant qu'expert en rédaction e-commerce et en copywriting SEO.
+
+Tâche : Rédige une fiche produit hautement convertissante pour le produit suivant : "${product}".
+
+Public Cible : ${audience}
+Ton de Rédaction : ${toneText}
+
+Caractéristiques & Bénéfices Clés :
+${features ? features : '- Non spécifiés'}
+
+Structure de la Fiche Produit demandée :
+1. Titre Captivant (optimisé pour le référencement)
+2. Une accroche vendeuse (2-3 phrases impactantes)
+3. Liste à puces des principaux bénéfices orientés client
+4. Description détaillée axée sur la résolution des problèmes du client
+5. Appel à l'action (CTA) clair et persuasif
+
+Rédige l'intégralité du contenu en français.`;
+    } else {
+      generatedPrompt = `Role: Act as an expert e-commerce copywriter and SEO specialist.
+
+Task: Write a high-converting product description for the following product: "${product}".
+
+Target Audience: ${audience}
+Tone of Voice: ${toneText}
+
+Key Features & Benefits:
+${features ? features : '- Not specified'}
+
+Requested Structure:
+1. Catchy SEO-optimized Title
+2. Compelling Hook (2-3 impactful sentences)
+3. Bullet points of main client-focused benefits
+4. Detailed description solving customer pain points
+5. Clear and persuasive Call to Action (CTA)
+
+Write all output in English.`;
     }
 
-    function generatePrompt() {
-      const product = document.getElementById('product').value || (currentLang === 'fr' ? 'Mon Produit' : 'My Product');
-      const audience = document.getElementById('audience').value || (currentLang === 'fr' ? 'Clients potentiels' : 'Potential Customers');
-      const type = document.getElementById('type').value;
+    document.getElementById('output').value = generatedPrompt;
+  }
 
-      let promptText = "";
+  function copyPrompt() {
+    const output = document.getElementById('output');
+    if (!output.value) return;
 
-      if (currentLang === 'fr') {
-        if (type === 'description') {
-          promptText = `Rédige une fiche produit captivante et optimisée SEO pour le produit "${product}".\n\n- Public cible : ${audience}\n- Structure : Accroche persuasive, liste des avantages clés avec puces, caractéristiques techniques, et un appel à l'action (CTA) incitatif.\n- Ton : Professionnel, engageant et orienté conversion.`;
-        } else if (type === 'ad') {
-          promptText = `Rédige 3 variations de textes publicitaires (Facebook/Instagram) pour le produit "${product}".\n\n- Public cible : ${audience}\n- Format : Titre percutant, corps du texte axé sur la résolution de problème, et appel à l'action court.\n- Ton : Captivant, dynamique et persuasif.`;
-        } else {
-          promptText = `Rédige un courriel de vente pour le produit "${product}".\n\n- Public cible : ${audience}\n- Inclure : 3 propositions d'objets de courriel accrocheurs, un corps de message personnalisé centré sur la valeur du produit, et un bouton d'action clair.\n- Ton : Chaleureux et convaincant.`;
-        }
-      } else {
-        if (type === 'description') {
-          promptText = `Write a compelling and SEO-optimized product description for "${product}".\n\n- Target Audience: ${audience}\n- Structure: Strong hook, bulleted list of key benefits, technical details, and a clear Call to Action (CTA).\n- Tone: Professional, engaging, and conversion-focused.`;
-        } else if (type === 'ad') {
-          promptText = `Write 3 ad copy variations (Facebook/Instagram) for "${product}".\n\n- Target Audience: ${audience}\n- Format: Attention-grabbing headline, problem-solving body copy, and a strong CTA.\n- Tone: Dynamic, persuasive, and engaging.`;
-        } else {
-          promptText = `Write a sales email for "${product}".\n\n- Target Audience: ${audience}\n- Include: 3 catchy subject line options, personalized body text focusing on value, and a clear call to action.\n- Tone: Warm, convincing, and direct.`;
-        }
-      }
+    output.select();
+    document.execCommand('copy');
 
-      document.getElementById('output').innerText = promptText;
-      document.getElementById('result-card').style.display = 'block';
-    }
+    const btn = document.getElementById('btn-copy');
+    const originalText = translations[currentLang].copyBtn;
+    btn.textContent = translations[currentLang].copied;
+    setTimeout(() => {
+      btn.textContent = originalText;
+    }, 2000);
+  }
+</script>
 
-    function copyPrompt() {
-      const text = document.getElementById('output').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('btn-copy');
-        const orig = btn.innerText;
-        btn.innerText = translations[currentLang].copied;
-        setTimeout(() => btn.innerText = orig, 2000);
-      });
-    }
-  </script>
 </body>
 </html>
+
