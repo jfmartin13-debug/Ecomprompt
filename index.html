@@ -6,14 +6,14 @@
   <title>EcomPrompt - Générateur de Prompts E-commerce</title>
   <style>
     :root {
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --card-bg: #ffffff;
-      --text: #1f2937;
-      --text-muted: #6b7280;
-      --border: #e5e7eb;
-      --input-bg: #f9fafb;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --input-bg: #0f172a;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
     }
 
     * {
@@ -24,7 +24,7 @@
     }
 
     body {
-      background: var(--bg-gradient);
+      background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
       padding: 2rem 1rem;
@@ -39,7 +39,8 @@
       background: var(--card-bg);
       padding: 2.5rem;
       border-radius: 16px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
     }
 
     .header {
@@ -48,20 +49,21 @@
       align-items: center;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
-      border-bottom: 2px solid #f3f4f6;
+      border-bottom: 1px solid var(--border);
     }
 
     h1 {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #111827;
+      color: var(--text);
     }
 
     .lang-switcher {
       display: flex;
-      background: #f3f4f6;
+      background: var(--bg);
       padding: 4px;
       border-radius: 8px;
+      border: 1px solid var(--border);
     }
 
     .lang-btn {
@@ -77,9 +79,8 @@
     }
 
     .lang-btn.active {
-      background: var(--card-bg);
-      color: var(--primary);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: var(--primary);
+      color: #ffffff;
     }
 
     .form-group {
@@ -91,7 +92,7 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
       font-size: 0.9rem;
-      color: #374151;
+      color: var(--text);
     }
 
     input, select, textarea {
@@ -105,11 +106,14 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
+    input::placeholder, textarea::placeholder {
+      color: #64748b;
+    }
+
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
     }
 
     button.generate-btn {
@@ -133,7 +137,7 @@
     .output-group {
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 2px solid #f3f4f6;
+      border-top: 1px solid var(--border);
     }
 
     textarea.output {
@@ -141,9 +145,9 @@
       resize: vertical;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.875rem;
-      background: #1e293b;
-      color: #f8fafc;
-      border: none;
+      background: var(--bg);
+      color: #38bdf8;
+      border: 1px solid var(--border);
     }
 
     .output-actions {
@@ -153,8 +157,8 @@
     }
 
     .copy-btn {
-      background: #e0e7ff;
-      color: var(--primary);
+      background: var(--border);
+      color: var(--text);
       border: none;
       padding: 0.5rem 1.25rem;
       font-weight: 600;
@@ -164,7 +168,7 @@
     }
 
     .copy-btn:hover {
-      background: #c7d2fe;
+      background: #475569;
     }
   </style>
 </head>
